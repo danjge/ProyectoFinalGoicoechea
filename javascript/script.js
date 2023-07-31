@@ -10,8 +10,11 @@ fetch('./json/data.json')
   .then(data => {
     productos = data;
     renderizarTarjetas(productos);
+  })
+  .catch(error => {
+    console.error('Error al cargar los productos:', error.message);
   });
-
+    
 // Agrego eventos a los elementos de categoría
 for (const input of inputs) {
   input.addEventListener("click", filtrarPorCategoria);
@@ -63,7 +66,7 @@ function agregarAlCarrito(event) {
       let productoExistente = carrito.find(item => item.nombre === producto.nombre);
 
       if (productoExistente) {
-        // Verificar si la cantidad en el carrito + 1 no supera el stock disponible
+        // Verificar si la cantidad en el carrito > 0 no supera el stock disponible
         if (productoExistente.cantidad <0 <= producto.stock) {
           productoExistente.cantidad++;
           total += producto.precio;
@@ -101,21 +104,32 @@ function eliminarDelCarrito(nombreProducto) {
 
 // Guardo el carrito en el Local Storage
 function guardarCarritoEnLocalStorage() {
-  localStorage.setItem('carrito', JSON.stringify(carrito));
-  localStorage.setItem('total', total);
+  try {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    localStorage.setItem('total', total);
+  } catch (error) {
+    console.error('Error al guardar en el Local Storage:', error.message);
+    mostrarMensaje('No se pudo guardar el carrito. Por favor, inténtalo de nuevo.', 'error');
+  }
 }
 
 // Cargo el carrito desde el Local Storage
 function cargarCarritoDesdeLocalStorage() {
-  const carritoGuardado = localStorage.getItem('carrito');
-  const totalGuardado = localStorage.getItem('total');
+  try {
+    const carritoGuardado = localStorage.getItem('carrito');
+    const totalGuardado = localStorage.getItem('total');
 
-  if (carritoGuardado) {
-    carrito = JSON.parse(carritoGuardado);
-    total = parseInt(totalGuardado) || 0;
-    renderizarCarrito();
+    if (carritoGuardado) {
+      carrito = JSON.parse(carritoGuardado);
+      total = parseInt(totalGuardado) || 0;
+      renderizarCarrito();
+    }
+  } catch (error) {
+    console.error('Error al cargar desde el Local Storage:', error.message);
+    mostrarMensaje('No se pudo cargar el carrito. Iniciando carrito vacío.', 'warning');
   }
 }
+
 
 // Renderizo el carrito de compras
 function renderizarCarrito() {
