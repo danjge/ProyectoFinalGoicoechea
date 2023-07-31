@@ -1,0 +1,66 @@
+[
+    {
+        "id": 1,
+        "nombre": "LATTE",
+        "categoria": "takeaway",
+        "precio": 600,
+        "img": "https://i.ibb.co/s9rqX9K/producto1.png",
+        "stock": 30
+    },
+    {
+        "id": 2,
+        "nombre": "MOCACCINO",
+        "categoria": "takeaway",
+        "precio": 600,
+        "img": "https://i.ibb.co/C6MwLjP/producto2.png",
+        "stock": 20
+    },
+    {
+        "id": 3,
+        "nombre": "COLD BREW",
+        "categoria": "bebidasfrias",
+        "precio": 900,
+        "img": "https://i.ibb.co/dpT7jP7/productoslattecoldbrew.png",
+        "stock": 5
+    },
+    {
+        "id": 4, 
+        "nombre": "FRAPUCCINO", 
+        "categoria": "bebidasfrias", 
+        "precio": 800,
+        "img": "https://i.ibb.co/THw0hrw/frapuccino.png",
+        "stock": 15
+    },
+    {
+        "id": 5, 
+        "nombre": "BATIDO DE FRUTOS ROJOS", 
+        "categoria": "bebidasfrias", 
+        "precio": 700,
+        "img": "https://i.ibb.co/VNBwNSg/Frutosrojos.png",
+        "stock": 7
+    },
+    {
+        "id": 6, 
+        "nombre": "JUGO DE FRUTAS TROPICALES", 
+        "categoria": "bebidasfrias", 
+        "precio": 700,
+        "img": "https://i.ibb.co/WcMj7y9/Licuadofrutas.png",
+        "stock": 10
+    },
+    {
+        "id": 7, 
+        "nombre": "YOGURT", 
+        "categoria": "bebidasfrias", 
+        "precio": 500,
+        "img": "https://i.ibb.co/p39JPTs/yogurtgranola.png",
+        "stock": 8
+    },
+    {
+        "id": 8, 
+        "nombre": "GRANO BRASIL", 
+        "categoria": "granos", 
+        "precio": 2500,
+        "img": "https://i.ibb.co/LzF46Db/brasil.png",
+        "stock": 4
+    }
+]

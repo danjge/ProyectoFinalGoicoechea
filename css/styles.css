@@ -1,0 +1,49 @@
+* {
+    box-sizing: border-box;
+    margin: 4px;
+}
+
+#wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tarjetaProducto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 4px solid rgb(4, 0, 128);
+    border-radius: 10px;
+    margin: 1px;
+}
+
+.imagen {
+    width: 400px;
+    height: 300px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#carrito {
+    width: 100%;
+    height: 200px;
+    /* border: 1px solid black; */
+    border: 2px solid transparent;
+    border-image: linear-gradient(to right, #f00, #0f0, #00f);
+    border-image-slice: 1;
+}
+
+
+.ocultar {
+    display: none;
+}
+
+.mostrar {
+    display: flex;
+}
+
+#contenedorProducto {
+    display: flex;
+}
