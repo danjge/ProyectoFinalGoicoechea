@@ -3,6 +3,7 @@ let buscador = document.getElementById("buscador");
 let inputs = document.getElementsByClassName("input");
 let carrito = [];
 let total = 0;
+let arrayFiltradoActual = [];
 
 // Cargo productos desde el archivo JSON
 fetch('./json/data.json')
@@ -26,14 +27,20 @@ buscador.addEventListener("input", filtrarPorNombre);
 // Filtro productos por categoría
 function filtrarPorCategoria() {
   let filtros = Array.from(inputs).filter(input => input.checked).map(input => input.id);
-  let arrayFiltrado = productos.filter(producto => filtros.includes(producto.categoria));
-  renderizarTarjetas(arrayFiltrado.length > 0 ? arrayFiltrado : productos);
-  }
+  arrayFiltradoActual = productos.filter(producto => filtros.includes(producto.categoria));
+  renderizarTarjetas(arrayFiltradoActual.length > 0 ? arrayFiltradoActual : productos);
+}
 
 // Filtro productos por nombre
 function filtrarPorNombre() {
-  let arrayFiltrado = productos.filter(producto => producto.nombre.includes(buscador.value));
-  renderizarTarjetas(arrayFiltrado);
+  let arrayFiltradoPorNombre = productos.filter(producto => producto.nombre.includes(buscador.value));
+  arrayFiltradoActual = arrayFiltradoPorNombre.filter(producto => {
+    if (arrayFiltradoActual.length > 0) {
+      return arrayFiltradoActual.includes(producto);
+    }
+    return true;
+  });
+  renderizarTarjetas(arrayFiltradoActual);
 }
 
 // Renderizo las tarjetas de productos
@@ -84,21 +91,31 @@ function agregarAlCarrito(event) {
 
       guardarCarritoEnLocalStorage();
       renderizarCarrito();
-      renderizarTarjetas(productos); // Actualizar las tarjetas con la nueva cantidad de stock
-    } else {
-      mostrarMensaje("Este producto está agotado.", "warning");
+      // Verificar si arrayFiltradoActual no está vacío
+      if (arrayFiltradoActual.length > 0) {
+          renderizarTarjetas(arrayFiltradoActual); // Actualizar las tarjetas con el array filtrado
+      } else {
+          renderizarTarjetas(productos); // Si arrayFiltradoActual está vacío, mostrar todos los productos
+      }
     }
   }
 }
+
 function eliminarDelCarrito(nombreProducto) {
   let productoEnCarrito = carrito.find(item => item.nombre === nombreProducto);
   if (productoEnCarrito) {
     total -= productoEnCarrito.precio * productoEnCarrito.cantidad;
-    productoEnCarrito.stock += productoEnCarrito.cantidad; // Restituir la cantidad al stock
+    let producto = productos.find(producto => producto.nombre === nombreProducto);
+    producto.stock += productoEnCarrito.cantidad; // Restituir la cantidad al stock
     carrito = carrito.filter(item => item.nombre !== nombreProducto);
     guardarCarritoEnLocalStorage();
     renderizarCarrito();
-    renderizarTarjetas(productos); // Actualizar las tarjetas con la nueva cantidad de stock
+    // Verificar si arrayFiltradoActual no está vacío
+    if (arrayFiltradoActual.length > 0) {
+      renderizarTarjetas(arrayFiltradoActual); // Actualizar las tarjetas con el array filtrado
+    } else {
+      renderizarTarjetas(productos); // Si arrayFiltradoActual está vacío, mostrar todos los productos
+    }
   }
 }
 
@@ -130,7 +147,6 @@ function cargarCarritoDesdeLocalStorage() {
   }
 }
 
-
 // Renderizo el carrito de compras
 function renderizarCarrito() {
   let carritoHTML = document.getElementById("carrito");
@@ -152,10 +168,21 @@ function renderizarCarrito() {
 
 // Vacio el carrito
 function vaciarCarrito() {
+  carrito.forEach(({ nombre, cantidad }) => {
+    let producto = productos.find(producto => producto.nombre === nombre);
+    producto.stock += cantidad; // Devolver la cantidad al stock del producto
+  });
+
   carrito = [];
   total = 0;
   guardarCarritoEnLocalStorage();
   renderizarCarrito();
+  // Verificar si arrayFiltradoActual no está vacío
+  if (arrayFiltradoActual.length > 0) {
+    renderizarTarjetas(arrayFiltradoActual); // Actualizar las tarjetas con el array filtrado
+  } else {
+    renderizarTarjetas(productos); // Si arrayFiltradoActual está vacío, mostrar todos los productos
+  }
 }
 
 // Agrego evento al botón "Vaciar carrito"
